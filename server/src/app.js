@@ -34,6 +34,20 @@ app.get('/posts/:id', (req, res) => {
   })
 })
 
+app.delete('/posts/:id', (req, res) => {
+  const db = req.db
+  Post.remove({
+    _id: req.params.id
+  }, (err, post) => {
+    if (err) {
+      res.send(err)
+    }
+    res.send({
+      success: true
+    })
+  })
+})
+
 app.put('/posts/:id', (req, res) => {
   const db = req.db
   Post.findById(req.params.id, 'title description', (error, post) => {
