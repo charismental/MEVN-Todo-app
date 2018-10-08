@@ -26,6 +26,32 @@ app.get('/posts', (req, res) => {
   }).sort({_id: -1})
 })
 
+app.get('/posts/:id', (req, res) => {
+  const db = req.db
+  Post.findById(req.params.id, 'title description', (error, post) => {
+    if (error) { console.error(error) }
+    res.send(post)
+  })
+})
+
+app.put('/posts/:id', (req, res) => {
+  const db = req.db
+  Post.findById(req.params.id, 'title description', (error, post) => {
+    if (error) { console.error(error) }
+
+    post.title = req.body.title
+    post.description = req.body.description
+    post.save(error => {
+      if (error) {
+        console.log(error)
+      }
+      res.send({
+        success: true
+      })
+    })
+  })
+})
+
 app.post('/posts', (req, res) => {
   const db = req.db
   const title = req.body.title
